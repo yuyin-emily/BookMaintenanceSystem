@@ -1,0 +1,26 @@
+{%extends "../base/base.html" %}
+
+{% block title %}
+<title>書籍查詢頁面</title>
+{% endblock %}
+
+{% block content %}
+<table border = "1" cellpadding = "0" cellspacing = "0">
+    <th>書籍類別</th>
+    <th>書名</th>
+    <th>出版日期</th>
+    <th>借閱狀態</th>
+    <th>借閱人</th>
+    {% comment %} <th>操作</th> {% endcomment %}
+    {% for book in books %}
+    <tr>
+        <td>{{ book.category }}</td>
+        <td>{{ book.name }}</td>
+        <td>{{ book.publish_date }}</td>
+        <td>{{ book.status }}</td>
+        <td>{{ book.keeper_id }}</td>
+        {% comment %} <td>{{ book.cPhone }}</td> {% endcomment %}
+    </tr>
+    {% endfor %}
+</table>
+{% endblock %}
