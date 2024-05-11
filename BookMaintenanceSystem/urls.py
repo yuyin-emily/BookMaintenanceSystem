@@ -10,14 +10,14 @@ urlpatterns = [
     
     path("admin/", admin.site.urls),
     
-    path("", bviews.search),
+    path("", bviews.search,name="Book"),
     # path("create/", bviews.create),
     # path("edit/", bviews.edit),
     # path("details/", bviews.details),
     # path("lend_record/", bviews.lend_record),
     
     path("login/", aviews.sign_in),
-    path("log_out/", aviews.log_out),
+    path("log_out/", aviews.log_out,name="Logout"),
     path("register/", aviews.register),
     
 ]
