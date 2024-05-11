@@ -5,26 +5,28 @@
 {% endblock %}
 
 {% block content %}
-<table border = "1" cellpadding = "0" cellspacing = "0">
-    <th>書籍類別</th>
-    <th>書名</th>
-    <th>出版日期</th>
-    <th>借閱狀態</th>
-    <th>借閱人</th>
-    <th>操作</th>
-    {% for book in books %}
-    <tr>
-        <td>{{ book.category_name }}</td>
-        <td><a href="{% url 'detail' book.id %}">{{ book.name }}</td>
-        <td>{{ book.publish_date|date:"Y/m/d" }}</td>
-        <td>{{ book.status_name }}</td>
-        <td>{{ book.keeper_name }}</td>
-        <td>
-            <button onclick="lend_record({{ book.id }})">借閱紀錄</button>
-            <button onclick="edit({{ book.id }})">編輯</button>
-            <button onclick="delete({{ book.id }})">刪除</button>
-        </td>
-    </tr>
-    {% endfor %}
-</table>
+    <h1>書籍查詢</h1>
+    
+    <table border = "1" cellpadding = "0" cellspacing = "0">
+        <th>書籍類別</th>
+        <th>書名</th>
+        <th>出版日期</th>
+        <th>借閱狀態</th>
+        <th>借閱人</th>
+        <th>操作</th>
+        {% for book in books %}
+        <tr>
+            <td>{{ book.category_name }}</td>
+            <td><a href="{% url 'detail' book.id %}">{{ book.name }}</td>
+            <td>{{ book.publish_date|date:"Y/m/d" }}</td>
+            <td>{{ book.status_name }}</td>
+            <td>{{ book.keeper_name }}</td>
+            <td>
+                <button onclick="window.location.href='/lend_record'">借閱紀錄</button>
+                <button onclick="window.location.href='/edit'">編輯</button>
+                <button onclick="window.location.href='/delete'">刪除</button>
+            </td>
+        </tr>
+        {% endfor %}
+    </table>
 {% endblock %}

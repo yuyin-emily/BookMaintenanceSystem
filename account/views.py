@@ -1,5 +1,5 @@
 from django.http import HttpResponse
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect,HttpResponseRedirect
 from django.urls import reverse
 from account.forms import RegisterForm, LoginForm
 from django.contrib.auth import authenticate, login, logout
@@ -43,7 +43,7 @@ def register(request):
         form = RegisterForm(request.POST)
         if form.is_valid():
             user = form.save()
-            return HttpResponse('<script>alert("註冊成功！"); window.location.href = "/login";</script>')
+            return HttpResponseRedirect('<script>alert("註冊成功！"); window.location.href = "/login";</script>')
         else:
             message = ''
             for error in form.errors:

@@ -54,3 +54,10 @@ def delete(request, pk=None):
     book.delete()
     return render(request, "", locals())
 
+def lend_record(request, pk=None):
+    book = get_object_or_404(BookData, pk=pk)
+    records = BookLendRecord.objects.filter(book_id=pk).order_by("-id")
+    for record in records:
+        record.borrower_name = Student.objects.get(id=record.borrower_id).username
+    return render(request, "book/lend_record.html", locals())
+
