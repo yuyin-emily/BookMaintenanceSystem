@@ -55,7 +55,6 @@ def delete(request, pk=None):
     return render(request, "", locals())
 
 def lend_record(request, pk=None):
-    # records = get_object_or_404(BookLendRecord, pk=pk)
     records = BookLendRecord.objects.filter(book=pk).order_by("-borrow_date").all()
     for record in records:
         record.borrower_id = Student.objects.get(username=record.borrower).id
