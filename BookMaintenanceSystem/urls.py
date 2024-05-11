@@ -16,6 +16,21 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path
 
+import book.views as bviews
+import account.views as aviews
+
 urlpatterns = [
+    
     path("admin/", admin.site.urls),
+    
+    path("", bviews.search),
+    path("create/", bviews.create),
+    path("edit/", bviews.edit),
+    path("details/", bviews.details),
+    path("landRecord/", bviews.landRecord),
+    
+    path("login/", aviews.sign_in),
+    path("log_out/", aviews.log_out),
+    path("register/", aviews.register),
+    
 ]
