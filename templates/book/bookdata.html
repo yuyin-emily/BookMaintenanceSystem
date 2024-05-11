@@ -14,16 +14,27 @@
         <div class="row justify-content-center">
             <div class="col-6">
                 {{ form }}
-                <hr class="mb-3">
-                <button onclick="linktodelete({{ book.id }})">刪除</button>
-                <button onclick="linktodetail({{ book.id }})">存檔</button>
+                {% if edit == 1 %}
+                    <hr class="mb-3">
+                    <button onclick="linktodetail({{ pk }})">新增</button>
+
+                {% elif edit == 3 %}
+                    <hr class="mb-3">
+                    <button onclick="linktodelete({{ pk }})">刪除</button>
+                    <button onclick="linktodetail({{ pk }})">存檔</button>
+                {% elif edit == 2 %}
+                    <hr class="mb-3">
+                    <button onclick="linktoedit({{ pk }})">修改</button>
+                
+                {% endif %}
+                
             </div>
         </div>
     </form>
 
     <script>
-        function linktorecord(bookId) {
-            window.location.href = '/lend_record/' + bookId;
+        function linktoedit(bookId) {
+            window.location.href = '/edit/' + bookId;
         }
         function linktodetail(bookId) {
             window.location.href = '/detail/' + bookId;

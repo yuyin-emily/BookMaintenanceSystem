@@ -26,30 +26,30 @@ def search(request):
     return render(request,"book/search.html",locals())
 
 def detail(request, pk=None):
+    edit = 2
     book = get_object_or_404(BookData, id=pk)
     form = BookDataForm(instance=book, readonly=True)
-    return render(request, 'book/bookdata.html', locals())
+    if form.is_valid():
+        form.save()
+        return HttpResponseRedirect("edit/"+str(pk)+"/")
+    return render(request, 'book/bookdata.html', {'edit': edit, 'form': form, 'pk': pk})
 
 def create(request):
-    if request.method == "POST":
-        form = (request.POST, request.FILES)
-        if form.is_valid():
-            form.save()
-            return HttpResponseRedirect("")
-    else:
-        form = BookDataForm()
-    return render(request, "book/bookdata.html", locals())
+    edit = 1
+    form = BookDataForm(readonly=False)
+    return render(request, "book/bookdata.html", {'edit': edit, 'form': form})
 
 def edit(request, pk=None):
+    edit = 3
     book = get_object_or_404(BookData, pk=pk)
     if request.method == "POST":
-        form = BookDataForm(request.POST, instance=book)
+        form = BookDataForm(request.POST, instance=book, readonly=False)
         if form.is_valid():
             form.save()
             return HttpResponseRedirect("book/detail/"+str(pk)+"/")
     else:
-        form = BookDataForm(instance=book)
-    return render(request, "book/bookdata.html", locals())
+        form = BookDataForm(instance=book, readonly=False)
+    return render(request, "book/bookdata.html", {'edit': edit, 'form': form, 'pk': pk})
     
 def delete(request, pk=None):
     book = get_object_or_404(BookData, pk=pk)
