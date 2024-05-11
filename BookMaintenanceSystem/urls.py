@@ -11,9 +11,9 @@ urlpatterns = [
     path("admin/", admin.site.urls),
     
     path("", bviews.search,name="Book"),
-    # path("create/", bviews.create),
-    # path("edit/", bviews.edit),
-    # path("details/", bviews.details),
+    path("create/", bviews.create),
+    path("edit/", bviews.edit),
+    path("detail/<int:pk>/", bviews.detail,name="detail"),
     # path("lend_record/", bviews.lend_record),
     
     path("login/", aviews.sign_in),
