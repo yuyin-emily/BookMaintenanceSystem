@@ -22,11 +22,23 @@
             <td>{{ book.status_name }}</td>
             <td>{{ book.keeper_name }}</td>
             <td>
-                <button onclick="window.location.href='/lend_record'">借閱紀錄</button>
-                <button onclick="window.location.href='/edit'">編輯</button>
-                <button onclick="window.location.href='/delete'">刪除</button>
+                <button onclick="linktorecord({{ book.id }})">借閱紀錄</button>
+                <button onclick="linktoedit({{ book.id }})">編輯</button>
+                <button onclick="linktodelete({{ book.id }})">刪除</button>
             </td>
         </tr>
         {% endfor %}
     </table>
+
+    <script>
+        function linktorecord(bookId) {
+            window.location.href = '/lend_record/' + bookId;
+        }
+        function linktoedit(bookId) {
+            window.location.href = '/edit/' + bookId;
+        }
+        function linktodelete(bookId) {
+            window.location.href = '/delete/' + bookId;
+        }
+    </script>
 {% endblock %}
