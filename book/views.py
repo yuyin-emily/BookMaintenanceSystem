@@ -27,7 +27,7 @@ def search(request):
 
 def detail(request, pk=None):
     book = get_object_or_404(BookData, id=pk)
-    form = BookDataForm(instance=book)
+    form = BookDataForm(instance=book, readonly=True)
     return render(request, 'book/bookdata.html', locals())
 
 def create(request):

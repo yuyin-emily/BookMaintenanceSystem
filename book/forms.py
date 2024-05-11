@@ -38,6 +38,18 @@ class BookDataForm(forms.ModelForm):
         #     raise ValidationError("出版日期不得超過今日")
         return publish_date
     
+    def __init__(self, *args, **kwargs):
+        readonly = kwargs.pop('readonly', False)
+        super().__init__(*args, **kwargs)
+        self.fields['name'].widget.attrs['readonly'] = readonly
+        self.fields['category'].widget.attrs['disabled'] = readonly
+        self.fields['author'].widget.attrs['readonly'] = readonly
+        self.fields['publisher'].widget.attrs['readonly'] = readonly
+        self.fields['summary'].widget.attrs['readonly'] = readonly
+        self.fields['keeper_id'].widget.attrs['disabled'] = readonly
+        self.fields['status'].widget.attrs['disabled'] = readonly
+        self.fields['publish_date'].widget.attrs['disabled'] = readonly
+    
 class BookDataSearchForm(forms.ModelForm):
 
     # category = forms.ModelChoiceField(queryset=BookCategory.objects.all(), widget=forms.Select(attrs={"class": "form-control"}))
