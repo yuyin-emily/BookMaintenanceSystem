@@ -16,7 +16,7 @@
                 {{ form }}
                 {% if edit == 1 %}
                     <hr class="mb-3">
-                    <button onclick="window.location.href='{% url 'create'  %}'">新增</button>
+                    <button onclick="window.location.href='{% url 'Book'  %}'">新增</button>
                 {% elif edit == 3 %}
                     <hr class="mb-3">
                     {% if book.status.code_id == 'B' %}

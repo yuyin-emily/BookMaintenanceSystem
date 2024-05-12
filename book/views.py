@@ -1,4 +1,4 @@
-from django.shortcuts import render, get_object_or_404,HttpResponseRedirect
+from django.shortcuts import render, get_object_or_404,HttpResponseRedirect,redirect,reverse
 
 from django.db.models import Q
 
@@ -50,9 +50,9 @@ def detail(request, pk=None):
     edit = 2
     book = get_object_or_404(BookData, id=pk)
     form = BookDataForm(instance=book, readonly=True)
-    # if form.is_valid():
-    #     form.save()
-    #     return HttpResponseRedirect("book/edit/"+str(pk)+"/")
+    if form.is_valid():
+        form.save()
+        return redirect(reverse('edit', kwargs={'pk': book.id}))
     return render(request, 'book/bookdata.html', {'edit': edit, 'form': form, 'pk': pk})
 
 def create(request):
@@ -61,11 +61,10 @@ def create(request):
         form = BookDataForm(request.POST)
         if form.is_valid():
             form.save()
-            return HttpResponseRedirect("Book")
+            return redirect(reverse('Book'))
     else:
-        form = BookDataForm(readonly=False)
+        form = BookDataForm()
     return render(request, "book/bookdata.html", {'edit': edit, 'form': form})
-    
     
 
 def edit(request, pk=None):
@@ -77,10 +76,10 @@ def edit(request, pk=None):
     else:
         book.keeper_name = "-"
     if request.method == "POST":
-        form = BookDataForm(request.POST, instance=book, readonly=False)
+        form = BookDataForm(data=request.POST,instance=book)
         if form.is_valid():
-            form.save()
-            return HttpResponseRedirect("book/detail/"+str(pk)+"/")
+            form.save(id=pk)
+            return redirect(reverse('detail', kwargs={'pk': book.id}))
     else:
         form = BookDataForm(instance=book, readonly=False)
     return render(request, "book/bookdata.html", {'edit': edit, 'form': form, 'pk': pk,'book':book})
@@ -88,7 +87,7 @@ def edit(request, pk=None):
 def delete(request, pk=None):
     book = get_object_or_404(BookData, pk=pk)
     book.delete()
-    return render(request, "", locals())
+    return redirect(reverse('Book'))
 
 def lend_record(request, pk=None):
     records = BookLendRecord.objects.filter(book=pk).order_by("-borrow_date").all()

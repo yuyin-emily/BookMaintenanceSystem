@@ -15,7 +15,7 @@
                 <hr class="mb-3">
                 <button type="button" onclick="submitForm()">查詢</button>
                 <button type="button" onclick="clearForm()">清除</button>
-                <button type="button" onclick="window.location.href='/create/'">新增</button>
+                <button type="button" onclick="window.location.href='{% url 'create' %}'">新增</button>
             </div>
         </div>
     </form>
@@ -49,7 +49,7 @@
                 {% if book.status_name == '已借出' %}
                     <button onclick="alert('已借出無法刪除');">刪除</button>
                 {% else %}
-                    <button onclick="confirm('是否刪除' + '{{book.name}}' + '？') ? alert('刪除成功') : alert('已取消');">刪除</button>
+                    <button onclick="confirm('是否刪除' + '{{book.name}}' + '？') ? alert('刪除成功');window.location.href = '/delete/' + bookId; : alert('已取消');">刪除</button>
                 {% endif %}
             </td>
         </tr>
@@ -60,6 +60,7 @@
         function submitForm() {
             document.querySelector('form').submit();
         }
+
         function clearForm() {
             var form = document.querySelector('form');
     
@@ -69,5 +70,7 @@
                 input.value = ''; 
             });
         }
+
+
     </script>
 {% endblock %}

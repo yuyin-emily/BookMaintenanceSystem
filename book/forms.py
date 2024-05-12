@@ -5,6 +5,9 @@ from .models import BookData, BookCategory, BookCode, BookLendRecord
 from account.models import Student
 from django.forms import ModelForm
 
+from django.utils import timezone
+from django.core.exceptions import ValidationError
+
 
 class BookDataForm(forms.ModelForm):
     
@@ -36,8 +39,8 @@ class BookDataForm(forms.ModelForm):
 
     def clean_publish_date(self):
         publish_date = self.cleaned_data['publish_date']
-        # if publish_date > timezone.now().date():
-        #     raise ValidationError("出版日期不得超過今日")
+        if publish_date > timezone.now().date():
+            raise ValidationError("出版日期不得超過今日")
         return publish_date
     
     def __init__(self, *args, **kwargs):
@@ -51,9 +54,15 @@ class BookDataForm(forms.ModelForm):
         self.fields['keeper_id'].widget.attrs['disabled'] = readonly
         self.fields['status'].widget.attrs['disabled'] = readonly
         self.fields['publish_date'].widget.attrs['disabled'] = readonly
-        self.fields['category'].choices = [(category.category_id, category.category_name) for category in BookCategory.objects.all()]
-        self.fields['keeper_id'].choices = [(student.studentId, student.username) for student in Student.objects.all()]
-        self.fields['status'].choices = [(code.code_id, code.code_name) for code in BookCode.objects.all()]
+        self.fields['category'].choices = [('', '請選擇')] + [(category.category_id, category.category_name) for category in BookCategory.objects.all()]
+        self.fields['keeper_id'].choices = [('', '請選擇')] + [(student.studentId, student.username) for student in Student.objects.all()]
+        self.fields['status'].choices = [('', '請選擇')] + [(code.code_id, code.code_name) for code in BookCode.objects.all()]
+        
+    def save(self, commit=True):
+        book = super().save(commit=False)
+        if commit:
+            book.save()
+        return book
         
         
     
