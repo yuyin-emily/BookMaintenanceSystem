@@ -7,6 +7,7 @@ from account.models import Student
 
 from book.forms import BookDataForm,BookDataSearchForm
 
+
 # Create your views here.
 def search(request):
     try:
@@ -49,9 +50,9 @@ def detail(request, pk=None):
     edit = 2
     book = get_object_or_404(BookData, id=pk)
     form = BookDataForm(instance=book, readonly=True)
-    if form.is_valid():
-        form.save()
-        return HttpResponseRedirect("book/edit/"+str(pk)+"/")
+    # if form.is_valid():
+    #     form.save()
+    #     return HttpResponseRedirect("book/edit/"+str(pk)+"/")
     return render(request, 'book/bookdata.html', {'edit': edit, 'form': form, 'pk': pk})
 
 def create(request):
