@@ -17,6 +17,7 @@ class BookDataForm(forms.ModelForm):
 
     class Meta:
         model = BookData
+        exclude = ['id']
         fields = ['name', 'category', 'author', 'publisher', 'publish_date', 'summary', 'keeper_id', 'status']
         widgets = {
             'name': forms.TextInput(attrs={"class": "form-control"}),
@@ -46,7 +47,6 @@ class BookDataForm(forms.ModelForm):
     def __init__(self, *args, **kwargs):
         readonly = kwargs.pop('readonly', False)
         super().__init__(*args, **kwargs)
-        # self.fields['id'].auto_created = True
         self.fields['name'].widget.attrs['readonly'] = readonly
         self.fields['category'].widget.attrs['disabled'] = readonly
         self.fields['author'].widget.attrs['readonly'] = readonly
