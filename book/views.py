@@ -50,10 +50,10 @@ def detail(request, pk=None):
     edit = 2
     book = get_object_or_404(BookData, id=pk)
     form = BookDataForm(instance=book, readonly=True)
-    if form.is_valid():
-        form.save()
-        return redirect(reverse('edit', kwargs={'pk': pk}))
+    if request.method == "POST":
+            return redirect(reverse('edit', kwargs={'pk': pk}))
     return render(request, 'book/bookdata.html', {'edit': edit, 'form': form, 'pk': pk})
+
 
 def create(request):
     edit = 1
