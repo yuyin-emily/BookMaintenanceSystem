@@ -37,7 +37,7 @@
             <td>
                 <button onclick="window.location.href='{% url 'lend_record' book.id %}'">借閱紀錄</button>
                 <button onclick="window.location.href='{% url 'edit' book.id %}'">編輯</button>
-                <button onclick="confirm('確認刪除？') ? alert('刪除') : alert('取消');">刪除</button>
+                <button onclick="confirm('是否刪除' + '{{book.name}}' + '？') ? alert('刪除成功') : alert('已取消');">刪除</button>
             </td>
         </tr>
         {% endfor %}
