@@ -52,7 +52,13 @@
             document.querySelector('form').submit();
         }
         function clearForm() {
-            document.querySelector('form').reset();
+            var form = document.querySelector('form');
+    
+            var inputs = form.querySelectorAll('input[type="text"], select');
+            
+            inputs.forEach(function(input) {
+                input.value = ''; 
+            });
         }
     </script>
 {% endblock %}

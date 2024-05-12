@@ -76,6 +76,12 @@ class BookDataSearchForm(forms.ModelForm):
         
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
+        self.fields['name'].required = False
+        self.fields['category'].required = False
+        self.fields['status'].required = False
+        self.fields['category'].null = True
+        self.fields['name'].null = True
+        self.fields['status'].null = True
         self.fields['category'].choices = [('', '請選擇')] + [(category.category_id, category.category_name) for category in BookCategory.objects.all()]
         self.fields['keeper_id'].choices = [('', '請選擇')] + [(student.studentId, student.username) for student in Student.objects.all()]
         self.fields['status'].choices = [('', '請選擇')] + [(code.code_id, code.code_name) for code in BookCode.objects.all()]
