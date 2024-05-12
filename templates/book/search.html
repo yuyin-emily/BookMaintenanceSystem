@@ -19,7 +19,7 @@
             </div>
         </div>
     </form>
-    
+
     <table border = "1" cellpadding = "0" cellspacing = "0">
         <th>書籍類別</th>
         <th>書名</th>
@@ -35,23 +35,20 @@
             <td>{{ book.status_name }}</td>
             <td>{{ book.keeper_name }}</td>
             <td>
-                <button onclick="linktorecord({{ book.id }})">借閱紀錄</button>
-                <button onclick="linktoedit({{ book.id }})">編輯</button>
-                <button onclick="linktodelete({{ book.id }})">刪除</button>
+                <button onclick="window.location.href='{% url 'lend_record' book.id %}'">借閱紀錄</button>
+                <button onclick="window.location.href='{% url 'edit' book.id %}'">編輯</button>
+                <button onclick="confirm('確認刪除？') ? alert('刪除') : alert('取消');">刪除</button>
             </td>
         </tr>
         {% endfor %}
     </table>
 
     <script>
-        function linktorecord(bookId) {
-            window.location.href = '/lend_record/' + bookId;
+        function submitForm() {
+            document.querySelector('form').submit();
         }
-        function linktoedit(bookId) {
-            window.location.href = '/edit/' + bookId;
-        }
-        function linktodelete(bookId) {
-            window.location.href = '/delete/' + bookId;
+        function clearForm() {
+            document.querySelector('form').reset();
         }
     </script>
 {% endblock %}

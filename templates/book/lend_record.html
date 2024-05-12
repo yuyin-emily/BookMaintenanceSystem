@@ -6,7 +6,7 @@
 
 {% block content %}
     <h1>借閱紀錄</h1>
-    <button onclick="window.location.href='/'">回書籍查詢</button>
+    <button onclick="window.location.href='{% url 'Book' %}'">回書籍查詢</button>
     <table border = "1" cellpadding = "0" cellspacing = "0">
         <th>借閱日期</th>
         <th>借閱人編號</th>

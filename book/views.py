@@ -1,5 +1,7 @@
 from django.shortcuts import render, get_object_or_404,HttpResponseRedirect
 
+from django.db.models import Q
+
 from book.models import BookCategory,BookCode,BookData,BookLendRecord
 from account.models import Student
 
@@ -8,8 +10,26 @@ from book.forms import BookDataForm,BookDataSearchForm
 # Create your views here.
 def search(request):
     try:
-        books = BookData.objects.all().order_by("id")
-        form = BookDataSearchForm()
+        if request.method == "POST":
+            name = request.POST.get('name', None)
+            category = request.POST.get('category', None)
+            keeper_name = request.POST.get('keeper_name', None)
+            status = request.POST.get('status', None)
+            form = BookDataSearchForm(request.POST)
+            condition = Q()
+            if name:
+                condition &= Q(name__icontains=name)
+            if category:
+                condition &= Q(category_id=category)
+            if keeper_name:
+                condition &= Q(keeper_id=keeper_name)
+            if status:
+                condition &= Q(status_id=status)
+            books = BookData.objects.filter(condition).order_by("id")
+        else:
+            form = BookDataSearchForm()
+            books = BookData.objects.all().order_by("id")
+            
         for book in books:
             category = BookCategory.objects.get(category_id=book.category_id)
             book.category_name = category.category_name
@@ -36,12 +56,25 @@ def detail(request, pk=None):
 
 def create(request):
     edit = 1
-    form = BookDataForm(readonly=False)
+    if request.method == "POST":
+        form = BookDataForm(request.POST)
+        if form.is_valid():
+            form.save()
+            return HttpResponseRedirect("Book")
+    else:
+        form = BookDataForm(readonly=False)
     return render(request, "book/bookdata.html", {'edit': edit, 'form': form})
+    
+    
 
 def edit(request, pk=None):
     edit = 3
     book = get_object_or_404(BookData, pk=pk)
+    if book.keeper_id:
+        keeper_name = Student.objects.get(id=book.keeper_id).username
+        book.keeper_name = keeper_name
+    else:
+        book.keeper_name = "-"
     if request.method == "POST":
         form = BookDataForm(request.POST, instance=book, readonly=False)
         if form.is_valid():

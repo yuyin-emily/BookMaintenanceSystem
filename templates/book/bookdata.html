@@ -8,7 +8,7 @@
 <br>
     <br>
     <br>
-    <button onclick="window.location.href='/'">回書籍查詢</button>
+    <button onclick="window.location.href='{% url 'Book' %}'">回書籍查詢</button>
     <form action="" method="POST" enctype="multipart/form-data">
         {% csrf_token %}
         <div class="row justify-content-center">
@@ -16,32 +16,20 @@
                 {{ form }}
                 {% if edit == 1 %}
                     <hr class="mb-3">
-                    <button onclick="linktodetail({{ pk }})">新增</button>
+                    <button onclick="window.location.href='/'">新增</button>
 
                 {% elif edit == 3 %}
                     <hr class="mb-3">
-                    <button onclick="linktodelete({{ pk }})">刪除</button>
-                    <button onclick="linktodetail({{ pk }})">存檔</button>
+                    <button onclick="window.location.href='{% url 'delete' pk %}'">刪除</button>
+                    <button onclick="window.location.href='{% url 'detail' pk %}'">存檔</button>
                 {% elif edit == 2 %}
                     <hr class="mb-3">
-                    <button onclick="linktoedit({{ pk }})">修改</button>
+                    <button onclick="window.location.href='{% url 'edit' pk %}'">修改</button>
                 
                 {% endif %}
                 
             </div>
         </div>
     </form>
-
-    <script>
-        function linktoedit(bookId) {
-            window.location.href = '/edit/' + bookId;
-        }
-        function linktodetail(bookId) {
-            window.location.href = '/detail/' + bookId;
-        }
-        function linktodelete(bookId) {
-            window.location.href = '/delete/' + bookId;
-        }
-    </script>
 
 {% endblock %}

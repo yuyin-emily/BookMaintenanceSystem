@@ -4,6 +4,7 @@ from django.contrib.auth.models import User
 from .models import BookData, BookCategory, BookCode, BookLendRecord
 from django.forms import ModelForm
 
+
 class BookDataForm(forms.ModelForm):
     
     publish_date = forms.DateField(widget=forms.DateInput(attrs={"class": "form-control", "type": "date"}),
@@ -49,6 +50,7 @@ class BookDataForm(forms.ModelForm):
         self.fields['keeper_id'].widget.attrs['disabled'] = readonly
         self.fields['status'].widget.attrs['disabled'] = readonly
         self.fields['publish_date'].widget.attrs['disabled'] = readonly
+        
     
 class BookDataSearchForm(forms.ModelForm):
 
@@ -70,5 +72,18 @@ class BookDataSearchForm(forms.ModelForm):
             'keeper_id': '借閱人',
             'status': '借閱狀態',
         }
+        
+        def __init__(self, *args, **kwargs):
+            
+            super(BookDataForm, self).__init__(*args, **kwargs)
+            
+            # category_choices = list(BookCategory.objects.values_list('category_id', 'category_name'))
+            
+            # self.fields['category'].choices = category_choices
+            
+            self.fields['name'].required = False
+            self.fields['category'].required = False
+            self.fields['keeper_id'].required = False
+            self.fields['status'].required = False
         
         
