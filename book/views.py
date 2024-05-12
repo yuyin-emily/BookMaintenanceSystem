@@ -60,7 +60,7 @@ def create(request):
     if request.method == "POST":
         form = BookDataForm(request.POST)
         if form.is_valid():
-            form.save()
+            new_book = form.save(commit=True)
             return redirect(reverse('Book'))
     else:
         form = BookDataForm()
@@ -76,10 +76,10 @@ def edit(request, pk=None):
     else:
         book.keeper_name = "-"
     if request.method == "POST":
-        form = BookDataForm(data=request.POST,instance=book)
+        form = BookDataForm(request.POST,instance=book)
         if form.is_valid():
-            form.save(id=pk)
-            return redirect(reverse('detail', kwargs={'pk': book.id}))
+            form.save()
+            return redirect(reverse('detail', kwargs={'pk': pk}))
     else:
         form = BookDataForm(instance=book, readonly=False)
     return render(request, "book/bookdata.html", {'edit': edit, 'form': form, 'pk': pk,'book':book})

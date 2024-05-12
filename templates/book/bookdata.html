@@ -16,7 +16,7 @@
                 {{ form }}
                 {% if edit == 1 %}
                     <hr class="mb-3">
-                    <button onclick="window.location.href='{% url 'Book'  %}'">新增</button>
+                    <button>新增</button>
                 {% elif edit == 3 %}
                     <hr class="mb-3">
                     {% if book.status.code_id == 'B' %}
@@ -24,10 +24,10 @@
                     {% else %}
                         <button onclick="confirm('是否刪除' + '{{book.name}}' + '？') ? alert('刪除成功') : alert('已取消');">刪除</button>
                     {% endif %}
-                    <button onclick="window.location.href='{% url 'detail' pk %}'">存檔</button>
+                    <button>存檔</button>
                 {% elif edit == 2 %}
                     <hr class="mb-3">
-                    <button onclick="window.location.href='{% url 'edit' pk %}'">修改</button>
+                    <button>修改</button>
                 {% endif %}
                 
             </div>

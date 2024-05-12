@@ -49,7 +49,7 @@
                 {% if book.status_name == '已借出' %}
                     <button onclick="alert('已借出無法刪除');">刪除</button>
                 {% else %}
-                    <button onclick="confirm('是否刪除' + '{{book.name}}' + '？') ? alert('刪除成功');window.location.href = '/delete/' + bookId; : alert('已取消');">刪除</button>
+                    <button onclick="deleteBook('{{book.name}}', '{{book.id}}')">刪除</button>
                 {% endif %}
             </td>
         </tr>
@@ -70,7 +70,14 @@
                 input.value = ''; 
             });
         }
-
-
-    </script>
+        function deleteBook(bookName, bookId) {
+            if (confirm('是否刪除 ' + bookName + '？')) {
+                window.location.href = '/delete/' + bookId;
+                alert('刪除成功');
+                
+            } else {
+                alert('已取消');
+            }
+        }
+        </script>
 {% endblock %}
