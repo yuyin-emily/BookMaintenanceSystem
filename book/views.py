@@ -51,7 +51,7 @@ def detail(request, pk=None):
     form = BookDataForm(instance=book, readonly=True)
     if form.is_valid():
         form.save()
-        return HttpResponseRedirect("edit/"+str(pk)+"/")
+        return HttpResponseRedirect("book/edit/"+str(pk)+"/")
     return render(request, 'book/bookdata.html', {'edit': edit, 'form': form, 'pk': pk})
 
 def create(request):

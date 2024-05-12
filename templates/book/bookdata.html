@@ -17,7 +17,6 @@
                 {% if edit == 1 %}
                     <hr class="mb-3">
                     <button onclick="window.location.href='/'">新增</button>
-
                 {% elif edit == 3 %}
                     <hr class="mb-3">
                     <button onclick="window.location.href='{% url 'delete' pk %}'">刪除</button>
@@ -25,7 +24,6 @@
                 {% elif edit == 2 %}
                     <hr class="mb-3">
                     <button onclick="window.location.href='{% url 'edit' pk %}'">修改</button>
-                
                 {% endif %}
                 
             </div>
