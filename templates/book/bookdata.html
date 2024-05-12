@@ -19,7 +19,11 @@
                     <button onclick="window.location.href='/'">新增</button>
                 {% elif edit == 3 %}
                     <hr class="mb-3">
-                    <button onclick="window.location.href='{% url 'delete' pk %}'">刪除</button>
+                    {% if book.status.code_id == 'B' %}
+                        <button onclick="alert('已借出無法刪除');">刪除</button>
+                    {% else %}
+                        <button onclick="confirm('是否刪除' + '{{book.name}}' + '？') ? alert('刪除成功') : alert('已取消');">刪除</button>
+                    {% endif %}
                     <button onclick="window.location.href='{% url 'detail' pk %}'">存檔</button>
                 {% elif edit == 2 %}
                     <hr class="mb-3">

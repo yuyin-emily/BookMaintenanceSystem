@@ -82,7 +82,7 @@ def edit(request, pk=None):
             return HttpResponseRedirect("book/detail/"+str(pk)+"/")
     else:
         form = BookDataForm(instance=book, readonly=False)
-    return render(request, "book/bookdata.html", {'edit': edit, 'form': form, 'pk': pk})
+    return render(request, "book/bookdata.html", {'edit': edit, 'form': form, 'pk': pk,'book':book})
     
 def delete(request, pk=None):
     book = get_object_or_404(BookData, pk=pk)

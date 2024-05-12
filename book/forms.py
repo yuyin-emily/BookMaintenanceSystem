@@ -2,6 +2,7 @@ from django import forms
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.models import User
 from .models import BookData, BookCategory, BookCode, BookLendRecord
+from account.models import Student
 from django.forms import ModelForm
 
 
@@ -50,16 +51,16 @@ class BookDataForm(forms.ModelForm):
         self.fields['keeper_id'].widget.attrs['disabled'] = readonly
         self.fields['status'].widget.attrs['disabled'] = readonly
         self.fields['publish_date'].widget.attrs['disabled'] = readonly
+        self.fields['category'].choices = [(category.category_id, category.category_name) for category in BookCategory.objects.all()]
+        self.fields['keeper_id'].choices = [(student.studentId, student.username) for student in Student.objects.all()]
+        self.fields['status'].choices = [(code.code_id, code.code_name) for code in BookCode.objects.all()]
+        
         
     
 class BookDataSearchForm(forms.ModelForm):
-
-    # category = forms.ModelChoiceField(queryset=BookCategory.objects.all(), widget=forms.Select(attrs={"class": "form-control"}))
-    
     class Meta:
         model = BookData
         fields = ['name', 'category', 'keeper_id', 'status']
-        
         widgets = {
             'name': forms.TextInput(attrs={"class": "form-control"}),
             'category': forms.Select(attrs={"class": "form-control"}),
@@ -73,17 +74,10 @@ class BookDataSearchForm(forms.ModelForm):
             'status': '借閱狀態',
         }
         
-        def __init__(self, *args, **kwargs):
-            
-            super(BookDataForm, self).__init__(*args, **kwargs)
-            
-            # category_choices = list(BookCategory.objects.values_list('category_id', 'category_name'))
-            
-            # self.fields['category'].choices = category_choices
-            
-            self.fields['name'].required = False
-            self.fields['category'].required = False
-            self.fields['keeper_id'].required = False
-            self.fields['status'].required = False
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.fields['category'].choices = [('', '請選擇')] + [(category.category_id, category.category_name) for category in BookCategory.objects.all()]
+        self.fields['keeper_id'].choices = [('', '請選擇')] + [(student.studentId, student.username) for student in Student.objects.all()]
+        self.fields['status'].choices = [('', '請選擇')] + [(code.code_id, code.code_name) for code in BookCode.objects.all()]
         
         
