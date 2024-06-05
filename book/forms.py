@@ -14,6 +14,7 @@ class BookDataForm(forms.ModelForm):
     publish_date = forms.DateField(required=False,widget=forms.DateInput(attrs={"class": "form-control", "type": "date"}),
                                     label="出版日期",
                                     input_formats=['%Y-%m-%d'])
+    
 
     class Meta:
         model = BookData
@@ -79,6 +80,28 @@ class BookDataForm(forms.ModelForm):
         
     
 class BookDataSearchForm(forms.ModelForm):
+    
+    category = forms.ChoiceField(
+        label="書籍類別",
+        choices=[('', '請選擇')] + [(category.category_id, category.category_name) for category in BookCategory.objects.all()],
+        required=False,
+        widget=forms.Select(attrs={"class": "form-control", "id": "category"})
+    )
+    
+    keeper_id = forms.ChoiceField(
+        label="借閱人",
+        choices=[('', '請選擇')] + [(student.id, student.username) for student in Student.objects.all()],
+        required=False,
+        widget=forms.Select(attrs={"class": "form-control", "id": "keeper_id"})
+    )
+    
+    status = forms.ChoiceField(
+        label="借閱狀態",
+        choices=[('', '請選擇')] + [(code.code_id, code.code_name) for code in BookCode.objects.all()],
+        required=False,
+        widget=forms.Select(attrs={"class": "form-control", "id": "status"})
+    )
+    
     class Meta:
         model = BookData
         fields = ['name', 'category', 'keeper_id', 'status']
@@ -104,8 +127,5 @@ class BookDataSearchForm(forms.ModelForm):
         self.fields['name'].null = True
         self.fields['status'].null = True
         self.fields["keeper_id"].null = True
-        self.fields['category'].choices = [('', '請選擇')] + [(category.category_id, category.category_name) for category in BookCategory.objects.all()]
-        self.fields['keeper_id'].choices = [('', '請選擇')] + [(student.id, student.username) for student in Student.objects.all()]
-        self.fields['status'].choices = [('', '請選擇')] + [(code.code_id, code.code_name) for code in BookCode.objects.all()]
         
         
