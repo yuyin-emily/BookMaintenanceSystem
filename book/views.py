@@ -7,6 +7,8 @@ from account.models import Student
 
 from book.forms import BookDataForm,BookDataSearchForm
 
+from datetime import datetime
+
 
 # Create your views here.
 def search(request):
@@ -48,8 +50,16 @@ def search(request):
 
 def detail(request, pk=None):
     edit = 2
-    book = get_object_or_404(BookData, id=pk)
+    
+    try:
+        book = get_object_or_404(BookData, pk=pk)
+        if book.publish_date:
+            book.publish_date = book.publish_date.isoformat()
+    except:
+        return redirect(reverse('Book'))
+    
     form = BookDataForm(instance=book, readonly=True)
+    
     if request.method == "POST":
             return redirect(reverse('edit', kwargs={'pk': pk}))
     return render(request, 'book/bookdata.html', {'edit': edit, 'form': form, 'pk': pk})
@@ -69,8 +79,11 @@ def create(request):
 
 def edit(request, pk=None):
     edit = 3
+            
     try:
         book = get_object_or_404(BookData, pk=pk)
+        if book.publish_date:
+            book.publish_date = book.publish_date.isoformat()
     except:
         return redirect(reverse('Book'))
     
@@ -82,6 +95,7 @@ def edit(request, pk=None):
         else:
             book.keeper_name = "-"
         if form.is_valid():
+            form.keeper_id = int(form.cleaned_data['keeper_id'])
             form.save()
             return redirect(reverse('detail', kwargs={'pk': pk}))
     else:
@@ -99,4 +113,3 @@ def lend_record(request, pk=None):
     for record in records:
         record.borrower_id = Student.objects.get(username=record.borrower).id
     return render(request, "book/lend_record.html", locals())
-

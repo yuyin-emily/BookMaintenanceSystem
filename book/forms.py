@@ -10,7 +10,6 @@ from django.core.exceptions import ValidationError
 
 
 class BookDataForm(forms.ModelForm):
-    
     publish_date = forms.DateField(required=False,widget=forms.DateInput(attrs={"class": "form-control", "type": "date"}),
                                     label="出版日期",
                                     input_formats=['%Y-%m-%d'])
@@ -74,19 +73,17 @@ class BookDataForm(forms.ModelForm):
         self.fields['status'].widget.attrs['disabled'] = readonly
         self.fields['publish_date'].widget.attrs['disabled'] = readonly
         self.fields['category'].choices = [('', '請選擇')] + [(category.category_id, category.category_name) for category in BookCategory.objects.all()]
-        self.fields['keeper_id'].choices = [('', '請選擇')] + [(student.id, student.username) for student in Student.objects.all()]
         self.fields['status'].choices = [('', '請選擇')] + [(code.code_id, code.code_name) for code in BookCode.objects.all()]
         
-    def save(self, commit=True):
-        book = super().save(commit=False)
-        if commit:
-            book.save()
-        return book
+    # def save(self, commit=True):
+    #     book = super().save(commit=False)
+    #     if commit:
+    #         book.save()
+    #     return book
         
         
     
 class BookDataSearchForm(forms.Form):
-    
     name = forms.CharField(
         label="書名",
         widget=forms.TextInput(attrs={"class": "form-control"}),
@@ -114,33 +111,3 @@ class BookDataSearchForm(forms.Form):
         widget=forms.Select(attrs={"class": "form-control"})
     )
    
-    # class Meta:
-    #     model = BookData
-    #     fields = ['name', 'category', 'keeper_id', 'status']
-    #     widgets = {
-    #         'name': forms.TextInput(attrs={"class": "form-control"}),
-    #         'category': forms.Select(attrs={"class": "form-control"}),
-    #         'keeper_id': forms.Select(attrs={"class": "form-control"}),
-    #         'status': forms.Select(attrs={"class": "form-control"}),
-    #     }
-    #     labels = {
-    #         'name': '書名',
-    #         'category': '書籍類別',
-    #         'keeper_id': '借閱人',
-    #         'status': '借閱狀態',
-    #     }
-        
-    # def __init__(self, *args, **kwargs):
-    #     super().__init__(*args, **kwargs)
-    #     self.fields['name'].required = False
-    #     self.fields['category'].required = False
-    #     self.fields['status'].required = False
-    #     self.fields['category'].null = True
-    #     self.fields['name'].null = True
-    #     self.fields['status'].null = True
-    #     self.fields["keeper_id"].null = True
-    #     self.fields['category'].choices = [('', '請選擇')] + [(category.category_id, category.category_name) for category in BookCategory.objects.all()]
-    #     # self.fields['keeper_id'].choices = [('', '請選擇')] + [(student.id, student.username) for student in Student.objects.all()]
-    #     self.fields['status'].choices = [('', '請選擇')] + [(code.code_id, code.code_name) for code in BookCode.objects.all()]
-        
-        
