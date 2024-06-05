@@ -13,7 +13,7 @@ class BookCode(models.Model):
     code_name = models.CharField(max_length=100)
 
 class BookData(models.Model):
-    id = models.AutoField(primary_key=True)
+    # id = models.AutoField(auto_created=True,primary_key=True)
     name = models.CharField(max_length=100)
     category = models.ForeignKey(BookCategory, on_delete=models.CASCADE)
     author = models.CharField(max_length=100, null=True, blank=True)
@@ -25,7 +25,7 @@ class BookData(models.Model):
     status = models.ForeignKey(BookCode, on_delete=models.CASCADE)
     
 class BookLendRecord(models.Model):
-    id = models.AutoField(auto_created=True,primary_key=True)
+    # id = models.AutoField(auto_created=True,primary_key=True)
     book = models.ForeignKey(BookData, on_delete=models.CASCADE)
     borrower = models.ForeignKey(Student, on_delete=models.CASCADE)
     borrow_date = models.DateField()

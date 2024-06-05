@@ -2,9 +2,14 @@
 
 {% block title %}
 <title>書籍介面</title>
+{% load static %}
+<script src="{% static 'js/scripts.js' %}"></script>
 {% endblock %}
 
 {% block content %}
+
+{% load static %}
+<link rel="stylesheet" type="text/css" href="books.css">
 <br>
     <br>
     <br>
@@ -22,7 +27,7 @@
                     {% if book.status.code_id == 'B' %}
                         <button onclick="alert('已借出無法刪除');">刪除</button>
                     {% else %}
-                        <button onclick="confirm('是否刪除' + '{{book.name}}' + '？') ? alert('刪除成功') : alert('已取消');">刪除</button>
+                        <button onclick="deleteBook('{{book.name}}', '{{book.id}}')">刪除</button>
                     {% endif %}
                     <button>存檔</button>
                 {% elif edit == 2 %}
@@ -33,5 +38,6 @@
             </div>
         </div>
     </form>
+
 
 {% endblock %}

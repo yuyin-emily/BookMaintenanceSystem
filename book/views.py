@@ -69,7 +69,11 @@ def create(request):
 
 def edit(request, pk=None):
     edit = 3
-    book = get_object_or_404(BookData, pk=pk)
+    try:
+        book = get_object_or_404(BookData, pk=pk)
+    except:
+        return redirect(reverse('Book'))
+    
     if book.keeper_id:
         keeper_name = Student.objects.get(id=book.keeper_id).username
         book.keeper_name = keeper_name
@@ -87,6 +91,7 @@ def edit(request, pk=None):
 def delete(request, pk=None):
     book = get_object_or_404(BookData, pk=pk)
     book.delete()
+    print("delete")
     return redirect(reverse('Book'))
 
 def lend_record(request, pk=None):
