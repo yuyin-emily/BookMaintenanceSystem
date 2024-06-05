@@ -70,6 +70,7 @@ def create(request):
     if request.method == "POST":
         form = BookDataForm(request.POST)
         if form.is_valid():
+            form.keeper_id = int(form.cleaned_data['keeper_id'])
             form.save()
             return redirect(reverse('Book'))
     else:
