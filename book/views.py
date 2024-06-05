@@ -14,7 +14,7 @@ def search(request):
         if request.method == "POST":
             name = request.POST.get('name', None)
             category = request.POST.get('category', None)
-            keeper_name = request.POST.get('keeper_name', None)
+            keeper_id = request.POST.get('keeper_id', None)
             status = request.POST.get('status', None)
             form = BookDataSearchForm(request.POST)
             condition = Q()
@@ -22,8 +22,8 @@ def search(request):
                 condition &= Q(name__icontains=name)
             if category:
                 condition &= Q(category_id=category)
-            if keeper_name:
-                condition &= Q(keeper_id=keeper_name)
+            if keeper_id:
+                condition &= Q(keeper_id=keeper_id)
             if status:
                 condition &= Q(status_id=status)
             books = BookData.objects.filter(condition).order_by("id")
@@ -37,8 +37,8 @@ def search(request):
             status = BookCode.objects.get(code_id=book.status_id)
             book.status_name = status.code_name
             if book.keeper_id:
-                keeper_name = Student.objects.get(id=book.keeper_id).username
-                book.keeper_name = keeper_name
+                keeper_id = Student.objects.get(id=book.keeper_id).username
+                book.keeper_name = keeper_id
             else:
                 book.keeper_name = "-"
     except:
@@ -74,13 +74,13 @@ def edit(request, pk=None):
     except:
         return redirect(reverse('Book'))
     
-    if book.keeper_id:
-        keeper_name = Student.objects.get(id=book.keeper_id).username
-        book.keeper_name = keeper_name
-    else:
-        book.keeper_name = "-"
     if request.method == "POST":
         form = BookDataForm(request.POST,instance=book)
+        if book.keeper_id:
+            keeper_name = Student.objects.get(id=book.keeper_id).username
+            book.keeper_name = keeper_name
+        else:
+            book.keeper_name = "-"
         if form.is_valid():
             form.save()
             return redirect(reverse('detail', kwargs={'pk': pk}))

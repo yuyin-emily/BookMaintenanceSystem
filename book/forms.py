@@ -14,8 +14,14 @@ class BookDataForm(forms.ModelForm):
     publish_date = forms.DateField(required=False,widget=forms.DateInput(attrs={"class": "form-control", "type": "date"}),
                                     label="出版日期",
                                     input_formats=['%Y-%m-%d'])
-    
 
+    keeper_id = forms.ChoiceField(
+        label="借閱人",
+        choices=[('', '請選擇')] + [(student.id, student.username) for student in Student.objects.all()],
+        required=False,
+        widget=forms.Select(attrs={"class": "form-control", "id": "keeper_id"})
+    )
+    
     class Meta:
         model = BookData
         exclude = ['id']
@@ -79,13 +85,19 @@ class BookDataForm(forms.ModelForm):
         
         
     
-class BookDataSearchForm(forms.ModelForm):
+class BookDataSearchForm(forms.Form):
+    
+    name = forms.CharField(
+        label="書名",
+        widget=forms.TextInput(attrs={"class": "form-control"}),
+        required=False
+    )
     
     category = forms.ChoiceField(
         label="書籍類別",
         choices=[('', '請選擇')] + [(category.category_id, category.category_name) for category in BookCategory.objects.all()],
         required=False,
-        widget=forms.Select(attrs={"class": "form-control", "id": "category"})
+        widget=forms.Select(attrs={"class": "form-control"})
     )
     
     keeper_id = forms.ChoiceField(
@@ -99,33 +111,36 @@ class BookDataSearchForm(forms.ModelForm):
         label="借閱狀態",
         choices=[('', '請選擇')] + [(code.code_id, code.code_name) for code in BookCode.objects.all()],
         required=False,
-        widget=forms.Select(attrs={"class": "form-control", "id": "status"})
+        widget=forms.Select(attrs={"class": "form-control"})
     )
-    
-    class Meta:
-        model = BookData
-        fields = ['name', 'category', 'keeper_id', 'status']
-        widgets = {
-            'name': forms.TextInput(attrs={"class": "form-control"}),
-            'category': forms.Select(attrs={"class": "form-control"}),
-            'keeper_id': forms.Select(attrs={"class": "form-control"}),
-            'status': forms.Select(attrs={"class": "form-control"}),
-        }
-        labels = {
-            'name': '書名',
-            'category': '書籍類別',
-            'keeper_id': '借閱人',
-            'status': '借閱狀態',
-        }
+   
+    # class Meta:
+    #     model = BookData
+    #     fields = ['name', 'category', 'keeper_id', 'status']
+    #     widgets = {
+    #         'name': forms.TextInput(attrs={"class": "form-control"}),
+    #         'category': forms.Select(attrs={"class": "form-control"}),
+    #         'keeper_id': forms.Select(attrs={"class": "form-control"}),
+    #         'status': forms.Select(attrs={"class": "form-control"}),
+    #     }
+    #     labels = {
+    #         'name': '書名',
+    #         'category': '書籍類別',
+    #         'keeper_id': '借閱人',
+    #         'status': '借閱狀態',
+    #     }
         
-    def __init__(self, *args, **kwargs):
-        super().__init__(*args, **kwargs)
-        self.fields['name'].required = False
-        self.fields['category'].required = False
-        self.fields['status'].required = False
-        self.fields['category'].null = True
-        self.fields['name'].null = True
-        self.fields['status'].null = True
-        self.fields["keeper_id"].null = True
+    # def __init__(self, *args, **kwargs):
+    #     super().__init__(*args, **kwargs)
+    #     self.fields['name'].required = False
+    #     self.fields['category'].required = False
+    #     self.fields['status'].required = False
+    #     self.fields['category'].null = True
+    #     self.fields['name'].null = True
+    #     self.fields['status'].null = True
+    #     self.fields["keeper_id"].null = True
+    #     self.fields['category'].choices = [('', '請選擇')] + [(category.category_id, category.category_name) for category in BookCategory.objects.all()]
+    #     # self.fields['keeper_id'].choices = [('', '請選擇')] + [(student.id, student.username) for student in Student.objects.all()]
+    #     self.fields['status'].choices = [('', '請選擇')] + [(code.code_id, code.code_name) for code in BookCode.objects.all()]
         
         
