@@ -9,7 +9,6 @@ from book.forms import BookDataForm,BookDataSearchForm
 
 from datetime import datetime
 
-
 # Create your views here.
 def search(request):
     try:
@@ -70,7 +69,10 @@ def create(request):
     if request.method == "POST":
         form = BookDataForm(request.POST)
         if form.is_valid():
-            form.keeper_id = int(form.cleaned_data['keeper_id'])
+            try:
+                form.keeper_id = int(form.cleaned_data['keeper_id'])
+            except:
+                form.keeper_id = None
             form.save()
             return redirect(reverse('Book'))
     else:
@@ -96,7 +98,10 @@ def edit(request, pk=None):
         else:
             book.keeper_name = "-"
         if form.is_valid():
-            form.keeper_id = int(form.cleaned_data['keeper_id'])
+            try:
+                form.keeper_id = int(form.cleaned_data['keeper_id'])
+            except:
+                form.keeper_id = None
             form.save()
             return redirect(reverse('detail', kwargs={'pk': pk}))
     else:

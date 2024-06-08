@@ -53,13 +53,13 @@ class BookDataForm(forms.ModelForm):
                 raise ValidationError("出版日期不得超過今日")
         return publish_date
     
-    def clean(self):
-        cleaned_data = super().clean()
-        status = cleaned_data.get('status')
-        keeper_id = cleaned_data.get('keeper_id')
+    # def clean(self):
+    #     cleaned_data = super().clean()
+    #     status = cleaned_data.get('status')
+    #     keeper_id = cleaned_data.get('keeper_id')
         
-        if status == '已借出' and not keeper_id:
-            raise ValidationError("當借閱狀態為已借出時，借閱人不能為空")
+    #     if status == '已借出' and not keeper_id:
+    #         raise ValidationError("當借閱狀態為已借出時，借閱人不能為空")
     
     def __init__(self, *args, **kwargs):
         readonly = kwargs.pop('readonly', False)
@@ -75,11 +75,11 @@ class BookDataForm(forms.ModelForm):
         self.fields['category'].choices = [('', '請選擇')] + [(category.category_id, category.category_name) for category in BookCategory.objects.all()]
         self.fields['status'].choices = [('', '請選擇')] + [(code.code_id, code.code_name) for code in BookCode.objects.all()]
         
-    # def save(self, commit=True):
-    #     book = super().save(commit=False)
-    #     if commit:
-    #         book.save()
-    #     return book
+    def save(self, commit=True):
+        book = super().save(commit=False)
+        if commit:
+            book.save()
+        return book
         
         
     
